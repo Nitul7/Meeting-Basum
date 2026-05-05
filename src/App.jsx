@@ -11,6 +11,7 @@ import Calender from "./pages/Calender";
 import ScheduleMeeting from "./pages/ScheduleMeeting";
 import JoinMeeting from "./pages/JoinMeeting";
 import NewMeeting from "./pages/NewMeeting";
+import NotFound from "./pages/NotFound";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
       <Route path="join-meeting" element={<JoinMeeting />} />
       <Route path="new-meeting" element={<NewMeeting />} />
       </Route>
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
