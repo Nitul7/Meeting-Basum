@@ -1,0 +1,117 @@
+.notfound-container {
+  height: 100vh;
+  background: white;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+
+}
+/* Glitch effect */
+.glitch {
+  font-size: 120px;
+  font-weight: bold;
+  position: relative;
+  color: #000;
+  animation: glitch 2s infinite, glow 3s ease-in-out infinite;
+}
+
+@keyframes glitch {
+  0% { text-shadow: 3px 3px #ff006e, -3px -3px #00d9ff; }
+  20% { text-shadow: -3px 3px #ff006e, 3px -3px #00d9ff; }
+  40% { text-shadow: 3px -3px #00d9ff, -3px 3px #ff006e; }
+  60% { text-shadow: -3px -3px #00d9ff, 3px 3px #ff006e; }
+  80% { text-shadow: 3px 3px #8338ec, -3px -3px #ffbe0b; }
+  100% { text-shadow: 3px 3px #ff006e, -3px -3px #00d9ff; }
+}
+
+@keyframes glow {
+  0%, 100% { filter: drop-shadow(0 0 10px rgba(0, 217, 255, 0.5)); }
+  50% { filter: drop-shadow(0 0 20px rgba(255, 0, 110, 0.8)); }
+}
+
+.title {
+  font-size: 28px;
+  margin-top: 10px;
+  animation: slideIn 0.6s ease-out;
+  color: #00d9ff;
+  text-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+}
+
+.message {
+  margin: 20px 0;
+  font-size: 18px;
+  opacity: 0.9;
+  animation: fadeIn 1s ease-out;
+  transition: all 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.buttons button {
+  margin: 10px 5px;
+  padding: 14px 28px;
+  border: 2px solid transparent;
+  border-radius: 30px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #00d9ff, #0099cc);
+  border-color: #00d9ff;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #0099cc, #00d9ff);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 217, 255, 0.4);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #ff006e, #ff0099);
+  border-color: #ff006e;
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #ff0099, #ff006e);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 0, 110, 0.4);
+}
+
+.buttons button:active {
+  transform: translateY(-1px);
+}
+
