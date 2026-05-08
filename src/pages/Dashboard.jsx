@@ -9,21 +9,32 @@ const Dashboard = () => {
     <div className="main">
 
       <div className="welcome">
-        <h2>Good Morning, Nitul tako 👋</h2>
+        <h2>Good Morning, Risan Basukala 👋</h2>
         <p>Here's what's happening with your meetings today.</p>
       </div>
 
       {/* ACTION CARDS */}
       <div className="cards">
         <div className="card">
-          <div className="icon purple">🎥</div>
+          <div className="icon purple">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="white">
+              <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z" />
+            </svg>
+          </div>
           <h4>Start New Meeting</h4>
           <p>Start an instant meeting</p>
           <button className="btn purple" onClick={() => navigate("/new-meeting")}>Start Now →</button>
         </div>
 
         <div className="card">
-          <div className="icon green">👥</div>
+          <div className="icon green">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+          </div>
           <h4>Join with Code</h4>
           <p>Join a meeting with code</p>
           <button className="btn green" onClick={() => navigate("/join-meeting")}>Join Meeting →</button>

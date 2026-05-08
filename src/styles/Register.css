@@ -1,0 +1,135 @@
+/* Exact NTC Blue Gradient Background from Login Page */
+.register-page {
+  background: linear-gradient(135deg, #003893 0%, #007ea7 100%);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: 'Inter', -apple-system, sans-serif;
+}
+
+.register-card {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  width: 400px;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.logo-section {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Logo and Header Styling */
+.logo-section h1 {
+  font-size: 24px;
+  margin: 10px 0;
+  color: #111;
+  font-weight: 700;
+}
+
+.logo-section p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 30px;
+}
+
+.logo-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+/* Form Styling */
+.input-group {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.input-group label {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+  color: #444;
+  margin-bottom: 8px;
+  letter-spacing: 0.5px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 14px;
+  outline: none;
+}
+
+.input-group input:focus {
+  border-color: #003893;
+}
+
+.password-field {
+  position: relative;
+}
+
+.password-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+/* Button with Gradient */
+.create-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #013587 0%, #007ea7 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.create-btn:hover {
+  opacity: 0.9;
+}
+
+.footer-links {
+  text-align: center;
+  font-size: 13px;
+  color: #4b5563;
+  margin-top: 20px;
+}
+
+.login-link {
+  color: #007ea7;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.login-link:hover {
+  color: #013587;
+  text-decoration: underline;
+  cursor: pointer;
+}
