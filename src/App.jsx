@@ -14,6 +14,7 @@ import ScheduleMeeting from "./pages/ScheduleMeeting";
 import JoinMeeting from "./pages/JoinMeeting";
 import NewMeeting from "./pages/NewMeeting";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
 
 
 function App() {
