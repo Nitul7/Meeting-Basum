@@ -12,6 +12,7 @@ import ScheduleMeeting from "./pages/ScheduleMeeting";
 import JoinMeeting from "./pages/JoinMeeting";
 import NewMeeting from "./pages/NewMeeting";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
       <Route path="schedule-meeting" element={<ScheduleMeeting />} />
       <Route path="join-meeting" element={<JoinMeeting />} />
       <Route path="new-meeting" element={<NewMeeting />} />
+      <Route path="logout" element={<Login />} />
       </Route>
       <Route path="*" element={<NotFound />} />
     </Routes>

@@ -48,6 +48,7 @@
 
 /* PROFILE */
 .profile {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -62,4 +63,75 @@
 
 .profile span {
   font-size: 14px;
+}
+
+
+.profile-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  padding: 8px 0;
+  min-width: 200px;
+  z-index: 1000;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #374151;
+  font-size: 14px;
+}
+
+.dropdown-item:hover {
+  background: #f3f4f6;
+  transform: translateX(4px);
+}
+
+.dropdown-item svg {
+  font-size: 18px;
+}
+
+.profile-item:hover {
+  color: #3b82f6;
+}
+
+.profile-item:hover svg {
+  color: #3b82f6;
+}
+
+.settings-item:hover {
+  color: #f59e0b;
+}
+
+.settings-item:hover svg {
+  color: #f59e0b;
+}
+
+.logout-item:hover {
+  color: #ef4444;
+  background: #fef2f2;
+}
+
+.logout-item:hover svg {
+  color: #ef4444;
 }
