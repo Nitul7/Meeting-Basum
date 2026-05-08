@@ -4,7 +4,6 @@ import Footer from "./components/Footer";
 import Sidebar from "./components/Sidebar";
 import { Routes,Route } from "react-router";
 import './App.css';
-import Login from "./pages/Login";
 import Register from "./pages/Register";
 import AppShell from "./layout/AppShell";
 import Dashboard from "./pages/Dashboard";

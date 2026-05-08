@@ -19,7 +19,7 @@ const Register = () => {
         <form className="register-form">
           <div className="input-group">
             <label>FULL NAME</label>
-            <input type="text" placeholder="John Doe" />
+            <input type="text" placeholder="Your Name" />
           </div>
 
           <div className="input-group">
