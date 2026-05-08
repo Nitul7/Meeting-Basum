@@ -63,3 +63,8 @@
 .profile span {
   font-size: 14px;
 }
+
+select {
+  border: none;
+  outline: none;
+}
