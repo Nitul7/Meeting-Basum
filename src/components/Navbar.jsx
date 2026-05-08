@@ -76,7 +76,7 @@ const Navbar = () => {
                 <SettingsIcon />
                 <span>Settings</span>
               </div>
-              <div className="dropdown-item logout-item" onClick={() => navigate('/logout')}>
+              <div className="dropdown-item logout-item" onClick={() => navigate('/login')}>
                 <LogoutIcon />
                 <span>Logout</span>
               </div>

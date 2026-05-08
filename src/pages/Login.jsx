@@ -24,7 +24,7 @@ function Login() {
 
           <div className="input-group">
             <label htmlFor="email">EMAIL ADDRESS</label>
-            <input type="email" id="email" placeholder="test@example.com" required />
+            <input type="email" id="email" placeholder="you@example.com" required />
           </div>
 
           <div className="input-group">
@@ -49,7 +49,7 @@ function Login() {
         </div>
 
         <div className="form-footer">
-          <span>Don't have an account? <a className="signup-link" onClick={() => navigate("/Register")}>Register here</a></span>
+          <span className='form-span'>Don't have an account? <a className="signup-link" onClick={() => navigate("/Register")}>Register here</a></span>
         </div>
       </div>
     </div>
