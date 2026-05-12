@@ -84,6 +84,48 @@ const Dashboard = () => {
             <button>Join</button>
           </div>
         </div>
+        <div className="meeting-card">
+          <div className="left">
+            <div className="mini-icon green">👥</div>
+            <div>
+              <h4>Marketing Strategy</h4>
+              <p>Host: Alice</p>
+            </div>
+          </div>
+
+          <div className="right">
+            <p>Today, 02:00 PM - 03:00 PM</p>
+            <button>Join</button>
+          </div>
+        </div>
+        <div className="meeting-card">
+          <div className="left">
+            <div className="mini-icon green">👥</div>
+            <div>
+              <h4>Marketing Strategy</h4>
+              <p>Host: Alice</p>
+            </div>
+          </div>
+
+          <div className="right">
+            <p>Today, 02:00 PM - 03:00 PM</p>
+            <button>Join</button>
+          </div>
+        </div>
+        <div className="meeting-card">
+          <div className="left">
+            <div className="mini-icon green">👥</div>
+            <div>
+              <h4>Marketing Strategy</h4>
+              <p>Host: Alice</p>
+            </div>
+          </div>
+
+          <div className="right">
+            <p>Today, 02:00 PM - 03:00 PM</p>
+            <button>Join</button>
+          </div>
+        </div>
 
         <div className="meeting-card">
           <div className="left">
