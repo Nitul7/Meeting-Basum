@@ -66,6 +66,18 @@
 /* MEETINGS */
 .meetings {
   margin-top: 30px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 8px;
+}
+
+.meetings::-webkit-scrollbar {
+  width: 6px;
+}
+
+.meetings::-webkit-scrollbar-thumb {
+  background: #4f46e5;
+  border-radius: 10px;
 }
 
 .meeting-header {

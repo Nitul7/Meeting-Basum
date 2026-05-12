@@ -50,7 +50,7 @@
 }
 
 .input-group {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .input-group label {
@@ -65,7 +65,7 @@
   width: 100%;
   border: 1px solid #e5e7eb;
   border-radius: 10px;
-  padding: 12px;
+  padding: 10px;
   font-size: 14px;
   outline: none;
 }
@@ -77,7 +77,7 @@
 
 /* SAVE BUTTON */
 .save-btn {
-  padding: 12px 20px;
+  padding: 10px 20px;
   border: none;
   border-radius: 10px;
   background: #4f46e5;
