@@ -4,6 +4,7 @@
   padding: 30px;
   background: #f9fafb;
   gap: 25px;
+  overflow: hidden;
 }
 
 .start-text h1 {

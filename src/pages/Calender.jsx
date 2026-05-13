@@ -9,23 +9,25 @@ const localizer = momentLocalizer(moment);
 
 const MyCalendar = ({ events }) => {
   return (
-    <div className="calendar-wrapper">
-      <Calendar
-        localizer={localizer}
-        events={events}
-        startAccessor="start"
-        endAccessor="end"
+    <div className="calendar-page">
+      <div className="calendar-wrapper">
+        <Calendar
+          localizer={localizer}
+          events={events}
+          startAccessor="start"
+          endAccessor="end"
 
-        /* IMPORTANT */
-        views={["month", "week", "day", "agenda"]}
-        defaultView="month"
+          /* IMPORTANT */
+          views={["month", "week", "day", "agenda"]}
+          defaultView="month"
 
-        toolbar={true}
-        popup={true}
+          toolbar={true}
+          popup={true}
 
-        selectable
-        style={{ height: "100%" }}
-      />
+          selectable
+          style={{ height: "100%" }}
+        />
+      </div>
     </div>
   );
 };
