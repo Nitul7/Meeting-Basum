@@ -1,9 +1,17 @@
+.calendar-page {
+  padding: 30px;
+  background: #f9fafb;
+  min-height: 100vh;
+  overflow: visible;
+}
+
 .calendar-wrapper {
-  height: 700px;
   background: white;
-  margin: 20px;
-  padding: 20px;
-  border-radius: 15px;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  height: 700px;
+  overflow: visible;
 }
 
 /* Toolbar Styling */

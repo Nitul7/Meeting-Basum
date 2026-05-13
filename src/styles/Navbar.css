@@ -10,6 +10,8 @@
   align-items: center;
 
   padding: 0 24px;
+  overflow: visible;
+  z-index: 999;
 }
 
 /* RIGHT */
@@ -53,6 +55,7 @@
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  overflow: visible;
 }
 
 .profile img {

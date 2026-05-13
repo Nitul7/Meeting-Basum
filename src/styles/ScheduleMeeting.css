@@ -1,5 +1,4 @@
 body {
-  font-family: Arial, sans-serif;
   background: #f6f7fb;
 }
 
@@ -7,6 +6,7 @@ body {
   display: flex;
   gap: 30px;
   padding: 30px;
+  overflow: hidden;
 }
 
 /* LEFT FORM */

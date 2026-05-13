@@ -37,6 +37,7 @@ const JoinMeeting = () => {
   }, []);
 
   return (
+    <div className="join-meeting">
     <div className="join-container">
       {/* LEFT SIDE */}
       <div className="join-left">
@@ -82,6 +83,7 @@ const JoinMeeting = () => {
         <p className="ready">You are ready to join!</p>
       </div>
     </div>
+  </div>
   );
 };
 
