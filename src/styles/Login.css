@@ -18,6 +18,16 @@
   /* padding: 0px; */
 }
 
+.logoo {
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  z-index: -1;
+}
+
 .login-card {
   display: flex;
   flex-direction: column;

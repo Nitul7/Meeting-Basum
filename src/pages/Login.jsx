@@ -11,6 +11,7 @@ function Login() {
   };
   return (
     <div className="login-container">
+      <img class="logoo" src="ntclogoo.png"></img>
       <div className="login-card">
 
         <div className="brand-header">

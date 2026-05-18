@@ -8,6 +8,15 @@
   font-family: 'Inter', -apple-system, sans-serif;
 }
 
+.reglogoo {
+  position: absolute;
+  top: 20px;
+  left: 10px;
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+
 .register-card {
   display: flex;
   flex-direction: column;

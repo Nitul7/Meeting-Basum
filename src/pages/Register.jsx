@@ -7,6 +7,7 @@ const Register = () => {
   const navigate = useNavigate();
   return (
     <div className="register-page">
+      <img class="reglogoo" src="/ntclogoo.png"></img>
       <div className="register-card">
         {/* Branding Section copied from Login page */}
         <div className="logo-section">
