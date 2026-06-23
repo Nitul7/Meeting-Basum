@@ -7,6 +7,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from "react-router";
+import { logout } from "../services/AuthService";
 
 const Navbar = () => {
   const [time, setTime] = useState(new Date());
@@ -76,7 +77,10 @@ const Navbar = () => {
                 <SettingsIcon />
                 <span>Settings</span>
               </div>
-              <div className="dropdown-item logout-item" onClick={() => navigate('/login')}>
+              <div className="dropdown-item logout-item" onClick={() => {
+                logout();
+                navigate('/login');
+              }}>
                 <LogoutIcon />
                 <span>Logout</span>
               </div>

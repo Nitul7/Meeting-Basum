@@ -2,9 +2,19 @@ import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
 import { Outlet } from 'react-router';
 import Footer from '../components/Footer';
+import { useAuth } from '../context/AuthContext';
+import { Navigate } from 'react-router';
 
 
 function AppShell() {
+    const { accessToken } = useAuth();
+
+    console.log("AppShell");
+    console.log(accessToken);
+
+    if (!accessToken) {
+        return <Navigate to="/login" />;
+    }
     return (
         <div className="app">
             <Sidebar />

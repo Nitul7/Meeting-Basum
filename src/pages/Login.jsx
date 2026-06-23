@@ -2,12 +2,26 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import '../styles/Login.css';
 import Logo from '../components/Logo'
+import { login } from '../services/AuthService';
+import { setAccessToken, setRefreshToken } from '../utils/localstorage';
 
 function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    navigate('/dashboard');
+    try {
+      const response = await login(email, password);
+      setAccessToken(response.data.accessToken);
+      setRefreshToken(response.data.refreshToken);
+
+      navigate('/dashboard');
+    } catch (error) {
+      console.log(error);
+    }
+    // Backend API call to login
+
   };
   return (
     <div className="login-container">
@@ -25,13 +39,13 @@ function Login() {
 
           <div className="input-group">
             <label htmlFor="email">EMAIL ADDRESS</label>
-            <input type="email" id="email" placeholder="you@example.com" required />
+            <input type="email" id="email" placeholder="you@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
           </div>
 
           <div className="input-group">
             <label htmlFor="password">PASSWORD</label>
             <div className="password-wrapper">
-              <input type="password" id="password" placeholder="password123" required />
+              <input type="password" id="password" placeholder="password123" required value={password} onChange={(e) => setPassword(e.target.value)} />
               <button type="button" className="password-toggle-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
