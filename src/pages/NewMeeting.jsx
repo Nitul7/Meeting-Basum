@@ -29,7 +29,7 @@ function NewMeeting() {
       </div>
       <div className="start-cards">
         <div className="start-now">
-          <img class="start-logo" src="start-logo.png"></img>
+          <img className="start-logo" src="start-logo.png"></img>
           <h3>Your meeting is ready!</h3>
           <p>Click the button below to start your Meeting</p>
           <button className="btn-start" onClick={() => navigate("/")}>
