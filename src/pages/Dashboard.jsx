@@ -44,7 +44,7 @@ const Dashboard = () => {
           <div className="icon orange">📅</div>
           <h4>Schedule Meeting</h4>
           <p>Plan your meeting</p>
-          <button className="btn orange" onClick={() => navigate("/schedule-meeting")}>Schedule Now →</button>
+          <button className="btn orange" onClick={() => navigate("/meeting/schedule")}>Schedule Now →</button>
         </div>
       </div>
 
