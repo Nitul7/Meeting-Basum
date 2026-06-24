@@ -31,7 +31,7 @@ function Login() {
       setAccessToken(response.data.accessToken);
       setRefreshToken(response.data.refreshToken);
       toast.success('Login successful!');
-      navigate('/dashboard');
+      navigate('/');
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || 'Login failed! Please try again.');
