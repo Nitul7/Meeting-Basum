@@ -4,6 +4,7 @@ import '../styles/Login.css';
 import Logo from '../components/Logo'
 import { login } from '../services/AuthService';
 import { setAccessToken, setRefreshToken } from '../utils/localstorage';
+import { toast } from 'react-toastify';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -16,13 +17,12 @@ function Login() {
       const response = await login(email, password);
       setAccessToken(response.data.accessToken);
       setRefreshToken(response.data.refreshToken);
-
+      toast.success('Login successful!');
       navigate('/dashboard');
     } catch (error) {
       console.log(error);
+      toast.error(error.response?.data?.message || 'Login failed! Please try again.');
     }
-    // Backend API call to login
-
   };
   return (
     <div className="login-container">
