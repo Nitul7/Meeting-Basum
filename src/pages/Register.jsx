@@ -2,42 +2,38 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
 import '../styles/Register.css';
 import Logo from '../components/Logo'
-import { register } from '../services/AuthService';
+import { register as registerUser } from '../services/AuthService';
 import { toast } from 'react-toastify';
+import { useForm } from "react-hook-form"
+import { RegisterFormSchemaResolver } from '../schemas/RegisterForm.schema';
 
 const Register = () => {
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Validation
-    if (!fullName || !email || !password || !confirmPassword) {
-      toast.error('Please fill in all fields');
-      return;
-    }
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: RegisterFormSchemaResolver,
+  });
 
-    if (password !== confirmPassword) {
-      toast.error('Passwords do not match');
-      return;
-    }
 
-    if (password.length < 6) {
-      toast.error('Password must be at least 6 characters');
-      return;
-    }
 
+  const onSubmit = async (data) => {
     try {
-      await register(fullName, email, password);
-      toast.success('Account created successfully! Redirecting to login...');
-      setTimeout(() => {
-        navigate('/login');
-      }, 2000);
+      const response = await registerUser(data.name, data.email, data.password);
+
+      if (response.status === 201) {
+        toast.success('Account created successfully! Redirecting to login...');
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000);
+      } else {
+        toast.error(response.data.message || 'Registration failed! Please try again.');
+      }
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || 'Registration failed! Please try again.');
@@ -55,21 +51,24 @@ const Register = () => {
           <p>Create your account to get started</p>
         </div>
 
-        <form className="register-form" onSubmit={handleSubmit}>
+        <form className="register-form" onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className="input-group">
             <label>FULL NAME</label>
-            <input type="text" placeholder="Your Name" value={fullName} onChange={(e) => setFullName(e.target.value)} required />
+            <input type="text" placeholder="Your Name" {...register("name")} />
+            {errors.fullName && <span className="error" style={{ color: 'red', fontSize: '12px', marginTop: '5px' }}>{errors.fullName.message}</span>}
           </div>
 
           <div className="input-group">
             <label>EMAIL ADDRESS</label>
-            <input type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <input type="email" placeholder="you@example.com" {...register("email")} />
+            {errors.email && <span className="error" style={{ color: 'red', fontSize: '12px', marginTop: '5px' }}>{errors.email.message}</span>}
           </div>
 
           <div className="input-group password-field">
             <label>PASSWORD</label>
             <div className="password-wrapper">
-              <input type={showPassword ? "text" : "password"} placeholder="At least 6 characters" value={password} onChange={(e) => setPassword(e.target.value)} required />
+              <input type={showPassword ? "text" : "password"} placeholder="At least 6 characters" {...register("password")} />
+              {errors.password && <span className="error" style={{ color: 'red', fontSize: '12px', marginTop: '5px' }}>{errors.password.message}</span>}
               <button type="button" className="password-toggle-btn" onClick={() => setShowPassword(!showPassword)}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -82,7 +81,7 @@ const Register = () => {
           <div className="input-group password-field">
             <label>CONFIRM PASSWORD</label>
             <div className="password-wrapper">
-              <input type={showPassword ? "text" : "password"} placeholder="Re-enter your password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+              <input type={showPassword ? "text" : "password"} placeholder="Re-enter your password" {...register("confirmPassword")} />
               <button type="button" className="password-toggle-btn" onClick={() => setShowPassword(!showPassword)}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -90,6 +89,7 @@ const Register = () => {
                 </svg>
               </button>
             </div>
+            {errors.confirmPassword && <span className="error" style={{ color: 'red', fontSize: '12px', marginTop: '5px' }}>{errors.confirmPassword.message}</span>}
           </div>
 
           <button type="submit" className="create-btn">Create Account</button>
