@@ -23,7 +23,7 @@ const Dashboard = () => {
           </div>
           <h4>Start New Meeting</h4>
           <p>Start an instant meeting</p>
-          <button className="btn purple" onClick={() => navigate("/new-meeting")}>Start Now →</button>
+          <button className="btn purple" onClick={() => navigate("/meeting/new")}>Start Now →</button>
         </div>
 
         <div className="card">
@@ -37,7 +37,7 @@ const Dashboard = () => {
           </div>
           <h4>Join with Code</h4>
           <p>Join a meeting with code</p>
-          <button className="btn green" onClick={() => navigate("/join-meeting")}>Join Meeting →</button>
+          <button className="btn green" onClick={() => navigate("/meeting/join")}>Join Meeting →</button>
         </div>
 
         <div className="card">

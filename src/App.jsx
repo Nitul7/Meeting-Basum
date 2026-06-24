@@ -20,33 +20,23 @@ function App() {
 
   return (
     <Routes>
-      {/* Default Route - Redirect to Login */}
-      <Route path="/" element={<Navigate to="/login" replace />} />
-      
       {/* Public Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="*" element={<NotFound />} />
 
-      {/* Protected Routes */}
-      <Route
-        path="/dashboard"
-        element={
-          <AppShell>
-            <Dashboard />
-          </AppShell>
-        }
-      />
+      <Route path="/" element={<AppShell />}>
+        <Route index element={<Dashboard />} />
 
-      <Route
-        path="/new-meeting"
-        element={
-          <AppShell>
-            <NewMeeting />
-          </AppShell>
-        }
-      />
+        <Route path="profile" element={<Profile />} />
+        <Route path="calendar" element={<Calender />} />
 
+        <Route path="meeting">
+          <Route path="schedule" element={<ScheduleMeeting />} />
+          <Route path="join" element={<JoinMeeting />} />
+          <Route path="new" element={<NewMeeting />} />
+        </Route>
+      </Route>
 
     </Routes>
   );
