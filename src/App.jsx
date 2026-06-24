@@ -1,7 +1,7 @@
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Sidebar from "./components/Sidebar";
-import { Routes, Route } from "react-router";
+import { Routes, Route, Navigate } from "react-router";
 import './App.css';
 import Register from "./pages/Register";
 import AppShell from "./layout/AppShell";
@@ -20,6 +20,9 @@ function App() {
 
   return (
     <Routes>
+      {/* Default Route - Redirect to Login */}
+      <Route path="/" element={<Navigate to="/login" replace />} />
+      
       {/* Public Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
