@@ -1,8 +1,12 @@
 import axios from 'axios';
 import { removeAccessToken, removeRefreshToken } from '../utils/localstorage';
 
-export const register = async (fullName, email, password) => {
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/register`, { fullName, email, password });
+export const register = async (name, email, password) => {
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/register`, { name, email, password }, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
     return response.data;
 };
 

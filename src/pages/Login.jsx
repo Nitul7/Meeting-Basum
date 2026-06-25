@@ -5,25 +5,41 @@ import Logo from '../components/Logo'
 import { login } from '../services/AuthService';
 import { setAccessToken, setRefreshToken } from '../utils/localstorage';
 import { toast } from 'react-toastify';
+import { useForm } from "react-hook-form"
+import { LoginFormSchemaResolver } from '../schemas/LoginForm.schema';
+
+
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm({
+    resolver: LoginFormSchemaResolver,
+  });
+
+
+  const onSubmit = async (data) => {
     try {
+      const { email, password } = data;
       const response = await login(email, password);
       setAccessToken(response.data.accessToken);
       setRefreshToken(response.data.refreshToken);
       toast.success('Login successful!');
-      navigate('/dashboard');
+      navigate('/');
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || 'Login failed! Please try again.');
     }
-  };
+  }
+
+
+
   return (
     <div className="login-container">
       <img className="logoo" src="ntclogoo.png"></img>
@@ -36,17 +52,18 @@ function Login() {
           <p className="brand-subtitle">Welcome! Sign in to your account</p>
         </div>
 
-        <form className="login-form" onSubmit={handleSubmit}>
+        <form className="login-form" onSubmit={handleSubmit(onSubmit)} noValidate>
 
           <div className="input-group">
             <label htmlFor="email">EMAIL ADDRESS</label>
-            <input type="email" id="email" placeholder="you@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input type="email" placeholder="you@example.com" {...register("email")} />
+            {errors.email && <span className="error" style={{ color: 'red', fontSize: '12px', marginTop: '5px' }}>{errors.email.message}</span>}
           </div>
 
           <div className="input-group">
             <label htmlFor="password">PASSWORD</label>
             <div className="password-wrapper">
-              <input type={showPassword ? "text" : "password"} id="password" placeholder="password123" required value={password} onChange={(e) => setPassword(e.target.value)} />
+              <input type={showPassword ? "text" : "password"} id="password" placeholder="password123" {...register("password")} />
               <button type="button" className="password-toggle-btn" onClick={() => setShowPassword(!showPassword)}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -54,6 +71,7 @@ function Login() {
                 </svg>
               </button>
             </div>
+            {errors.password && <span className="error">{errors.password.message}</span>}
           </div>
 
           <button type="submit" className="submit-btn">Login</button>
