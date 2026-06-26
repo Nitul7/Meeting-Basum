@@ -229,7 +229,7 @@ const ScheduleMeeting = ({ addEvent }) => {
             {form.participants ? form.participants.split(",").filter(Boolean).length : 0}
           </div>
 
-          <div className="summary-item">
+          <div className="summary-item-textarea">
             📝 Description:{" "}
             {form.description ||
               "No description provided"}
