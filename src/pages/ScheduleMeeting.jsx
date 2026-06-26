@@ -1,63 +1,109 @@
-import React, { useState } from "react";
+import React from "react";
 import "../styles/ScheduleMeeting.css";
 import { useForm } from "react-hook-form";
 import { ScheduleMeetingFormSchemaResolver } from "../schemas/ScheduleMeetingForm.schema";
 
 const ScheduleMeeting = ({ addEvent }) => {
-  const [form, setForm] = useState({
-    title: "",
-    date: new Date().toISOString().split("T")[0], // Today's date
-    time: "10:00",
-    duration: "1",
-    timezone: "(GMT+05:45) Nepal Time",
-    participants: "",
-    description: "",
-  });
+  const today = new Date().toISOString().split("T")[0];
 
-
-
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, watch, formState: { errors } } = useForm({
     resolver: ScheduleMeetingFormSchemaResolver,
-  });
-
-  const onSubmit = (data) => {
-    console.log(data);
-  };
-
-  const handleSchedule = () => {
-    if (!form.title) {
-      alert("Enter meeting title");
-      return;
-    }
-
-    const start = new Date(`${form.date}T${form.time}`);
-
-    const end = new Date(
-      start.getTime() +
-      parseFloat(form.duration) * 60 * 60 * 1000
-    );
-
-    // Add event to calendar
-    if (addEvent) {
-      addEvent({
-        title: form.title,
-        start,
-        end,
-      });
-    }
-
-    alert("✅ Meeting Scheduled & Added to Calendar");
-
-    // Reset form after scheduling
-    setForm({
+    defaultValues: {
       title: "",
-      date: new Date().toISOString().split("T")[0],
+      date: today,
       time: "10:00",
       duration: "1",
-      timezone: "(GMT+05:45) Nepal Time",
+      timezone: "(GMT+05:15) Nepal Standard Time",
       participants: "",
       description: "",
-    });
+    },
+  });
+
+  const form = watch();
+
+  const durationLabel =
+    form.duration === "0.5" ? "30 Min" : form.duration === "2" ? "2 Hours" : "1 Hour";
+
+  const durationHours =
+    form.duration === "0.5" ? 0.5 : form.duration === "2" ? 2 : 1;
+
+  const formatDate = (dateValue) => {
+    if (!dateValue) return today;
+
+    const date = new Date(`${dateValue}T00:00:00`);
+    return new Intl.DateTimeFormat("en-US", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(date);
+  };
+
+  const formatTime = (timeValue) => {
+    if (!timeValue) return "10:00 AM";
+
+    const [hours, minutes] = timeValue.split(":");
+    const date = new Date();
+    date.setHours(Number(hours), Number(minutes), 0, 0);
+
+    return new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+    }).format(date);
+  };
+
+  const formatEndTime = (timeValue, durationValue) => {
+    if (!timeValue) return "11:00 AM";
+
+    const [hours, minutes] = timeValue.split(":");
+    const date = new Date();
+    date.setHours(Number(hours), Number(minutes), 0, 0);
+    date.setMinutes(date.getMinutes() + durationValue * 60);
+
+    return new Intl.DateTimeFormat("en-US", {
+      hour: "numeric",
+      minute: "2-digit",
+    }).format(date);
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      const response = await scheduleMeeting(data);
+      const successStatus = response?.status >= 200 && response?.status < 300;
+
+      if (successStatus) {
+        const start = new Date(`${data.date}T${data.time}`);
+
+        const end = new Date(
+          start.getTime() +
+            Number(data.duration) * 60 * 60 * 1000
+        );
+
+        if (addEvent) {
+          addEvent({
+            title: data.title,
+            start,
+            end,
+          });
+        }
+
+        toast.success("Meeting scheduled successfully!");
+
+        // Optional Redirect
+        // navigate("/dashboard");
+      } else {
+        toast.error(
+          response?.data?.message ||
+            "Failed to schedule meeting."
+        );
+      }
+    } catch (error) {
+      console.log(error);
+
+      toast.error(
+        error.response?.data?.message ||
+          "Failed to schedule meeting."
+      );
+    }
   };
 
   return (
@@ -90,7 +136,6 @@ const ScheduleMeeting = ({ addEvent }) => {
 
               <input
                 type="date"
-                value={form.date}
                 min={new Date().toISOString().split("T")[0]}
                 {...register("date")}
               />
@@ -102,7 +147,6 @@ const ScheduleMeeting = ({ addEvent }) => {
 
               <input
                 type="time"
-                value={form.time}
                 {...register("time")}
               />
               {errors.time && <span className="error" style={{ color: "red" }}>{errors.time.message}</span>}
@@ -115,7 +159,6 @@ const ScheduleMeeting = ({ addEvent }) => {
               <label>Duration</label>
 
               <select
-                value={form.duration}
                 {...register("duration")}
               >
                 <option value={0.5}>30 Min</option>
@@ -129,10 +172,10 @@ const ScheduleMeeting = ({ addEvent }) => {
               <label>Time Zone</label>
 
               <select
-                value={form.timezone}
                 {...register("timezone")}
               >
-                <option>(GMT+05:45) Nepal Time</option>
+                <option value="(GMT+05:15) Nepal Standard Time">(GMT+05:15) Nepal Standard Time</option>
+                
               </select>
               {errors.timezone && <span className="error" style={{ color: "red" }}>{errors.timezone.message}</span>}
             </div>
@@ -144,7 +187,6 @@ const ScheduleMeeting = ({ addEvent }) => {
           <input
             type="text"
             placeholder="Enter email addresses separated by commas"
-            value={form.participants}
             {...register("participants")}
           />
           {errors.participants && <span className="error" style={{ color: "red" }}>{errors.participants.message}</span>}
@@ -165,20 +207,15 @@ const ScheduleMeeting = ({ addEvent }) => {
 
           <div className="summary-item">
             📌{" "}
-            {form.title || "Project Planning Meeting"}
+            {form.title || "No title provided"}
           </div>
 
           <div className="summary-item">
-            📅 {form.date}
+            📅 {formatDate(form.date)}
           </div>
 
           <div className="summary-item">
-            ⏰ {form.time} -{" "}
-            {form.duration === "1"
-              ? "1 Hour"
-              : form.duration === "0.5"
-                ? "30 Min"
-                : "2 Hours"}
+            ⏰ {formatTime(form.time)} - {formatEndTime(form.time, durationHours)} ({durationLabel})
           </div>
 
           <div className="summary-item">
@@ -187,9 +224,7 @@ const ScheduleMeeting = ({ addEvent }) => {
 
           <div className="summary-item">
             👥 Participants:{" "}
-            {form.participants
-              ? form.participants.split(",").length
-              : 0}
+            {form.participants ? form.participants.split(",").filter(Boolean).length : 0}
           </div>
 
           <div className="summary-item">
@@ -198,10 +233,7 @@ const ScheduleMeeting = ({ addEvent }) => {
               "No description provided"}
           </div>
 
-          <button
-            className="btn"
-            type="submit"
-          >
+          <button className="btn" type="submit">
             Schedule Meeting
           </button>
         </div>

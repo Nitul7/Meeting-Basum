@@ -18,6 +18,7 @@
 }
 
 .start-cards {
+  height: 75vh;
   display: flex;
   flex-direction: column;
   gap: 20px;

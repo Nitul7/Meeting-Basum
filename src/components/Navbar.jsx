@@ -63,7 +63,7 @@ const Navbar = () => {
 
         {/* Profile */}
         <div className="profile" onClick={() => setShowDropdown(!showDropdown)}>
-          <img src="src\assets\mee.JPG" alt="profile" />
+          <img src="/src/assets/mee.JPG" alt="profile" />
           <span>Nitul Tako</span>
           <ExpandMoreOutlinedIcon style={{ fontSize: "18px" }} />
 

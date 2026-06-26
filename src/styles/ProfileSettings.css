@@ -6,6 +6,7 @@
 }
 
 .profile-card {
+  height: 85vh;
   background: white;
   border-radius: 16px;
   padding: 30px;
