@@ -2,6 +2,8 @@ import React from "react";
 import "../styles/ScheduleMeeting.css";
 import { useForm } from "react-hook-form";
 import { ScheduleMeetingFormSchemaResolver } from "../schemas/ScheduleMeetingForm.schema";
+import { scheduleMeeting } from "../services/MeetingService";
+import { toast } from "react-toastify";
 
 const ScheduleMeeting = ({ addEvent }) => {
   const today = new Date().toISOString().split("T")[0];
