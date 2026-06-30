@@ -13,7 +13,7 @@ import JoinMeeting from "./pages/JoinMeeting";
 import NewMeeting from "./pages/NewMeeting";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
-
+import Test from "./components/Test";
 
 function App() {
 
@@ -21,6 +21,7 @@ function App() {
   return (
     <Routes>
       {/* Public Routes */}
+      <Route path="/test" element={<Test />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="*" element={<NotFound />} />
