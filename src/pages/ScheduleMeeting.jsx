@@ -70,6 +70,8 @@ const ScheduleMeeting = ({ addEvent }) => {
   const onSubmit = async (data) => {
     try {
       const response = await scheduleMeeting(data);
+      console.log("Response: ");
+      console.log(response);
       const successStatus = response?.status >= 200 && response?.status < 300;
 
       if (successStatus) {
@@ -77,7 +79,7 @@ const ScheduleMeeting = ({ addEvent }) => {
 
         const end = new Date(
           start.getTime() +
-            Number(data.duration) * 60 * 60 * 1000
+          Number(data.duration) * 60 * 60 * 1000
         );
 
         if (addEvent) {
@@ -95,7 +97,7 @@ const ScheduleMeeting = ({ addEvent }) => {
       } else {
         toast.error(
           response?.data?.message ||
-            "Failed to schedule meeting."
+          "Failed to schedule meeting."
         );
       }
     } catch (error) {
@@ -103,7 +105,7 @@ const ScheduleMeeting = ({ addEvent }) => {
 
       toast.error(
         error.response?.data?.message ||
-          "Failed to schedule meeting."
+        "Failed to schedule meeting."
       );
     }
   };
@@ -163,9 +165,9 @@ const ScheduleMeeting = ({ addEvent }) => {
               <select
                 {...register("duration")}
               >
-                <option value={0.5}>30 Min</option>
-                <option value={1}>1 Hour</option>
-                <option value={2}>2 Hours</option>
+                <option value={"30min"}>30 Min</option>
+                <option value={"1hr"}>1 Hour</option>
+                <option value={"2hr"}>2 Hours</option>
               </select>
               {errors.duration && <span className="error" style={{ color: "red" }}>{errors.duration.message}</span>}
             </div>
@@ -177,7 +179,7 @@ const ScheduleMeeting = ({ addEvent }) => {
                 {...register("timezone")}
               >
                 <option value="(GMT+05:15) Nepal Standard Time">(GMT+05:15) Nepal Standard Time</option>
-                
+
               </select>
               {errors.timezone && <span className="error" style={{ color: "red" }}>{errors.timezone.message}</span>}
             </div>
