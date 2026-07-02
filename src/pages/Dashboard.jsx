@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router";
 import "../styles/Dashboard.css";
 import { getMeetings } from "../services/MeetingService";
+import { copyMeetingLink } from "../utils/shareLink";
 import { useState, useEffect } from "react";
 
 const Dashboard = () => {
@@ -81,6 +82,7 @@ const Dashboard = () => {
 
             <div className="right">
               <p>Today, 10:00 AM - 11:00 AM</p>
+              <button onClick={() => copyMeetingLink(meeting._id)}>Share</button>
               <button onClick={() => navigate(`/meeting/${meeting._id}`)}>Join</button>
             </div>
           </div>

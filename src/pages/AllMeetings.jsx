@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 import "../styles/Dashboard.css";
 import { getMeetings } from "../services/MeetingService";
+import { copyMeetingLink } from "../utils/shareLink";
 
 const AllMeetings = () => {
   const navigate = useNavigate();
@@ -40,6 +41,7 @@ const AllMeetings = () => {
 
             <div className="right">
               <p>{new Date(meeting.startTime).toLocaleString()}</p>
+              <button onClick={() => copyMeetingLink(meeting._id)}>Share</button>
               <button onClick={() => navigate(`/meeting/${meeting._id}`)}>Join</button>
             </div>
           </div>
