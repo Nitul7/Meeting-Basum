@@ -4,9 +4,11 @@ import { useForm } from "react-hook-form";
 import { ScheduleMeetingFormSchemaResolver } from "../schemas/ScheduleMeetingForm.schema";
 import { scheduleMeeting } from "../services/MeetingService";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
 const ScheduleMeeting = ({ addEvent }) => {
   const today = new Date().toISOString().split("T")[0];
+  const navigate = useNavigate();
 
   const { register, handleSubmit, watch, formState: { errors } } = useForm({
     resolver: ScheduleMeetingFormSchemaResolver,
@@ -18,6 +20,8 @@ const ScheduleMeeting = ({ addEvent }) => {
       timezone: "(GMT+05:15) Nepal Standard Time",
       participants: "",
       description: "",
+      visibiliy: "public",
+      code: Math.random().toString(36).substring(2, 15),
     },
   });
 
@@ -69,6 +73,8 @@ const ScheduleMeeting = ({ addEvent }) => {
 
   const onSubmit = async (data) => {
     try {
+      console.log("Data: ");
+      console.log(data);
       const response = await scheduleMeeting(data);
       console.log("Response: ");
       console.log(response);
@@ -92,8 +98,8 @@ const ScheduleMeeting = ({ addEvent }) => {
 
         toast.success("Meeting scheduled successfully!");
 
-        // Optional Redirect
-        // navigate("/dashboard");
+        navigate("/");
+
       } else {
         toast.error(
           response?.data?.message ||
@@ -185,6 +191,26 @@ const ScheduleMeeting = ({ addEvent }) => {
             </div>
           </div>
 
+          {/* Visibility */}
+          <label>Visibility</label>
+          <select
+            {...register("visibility")}
+          >
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+            <option value="codeprotected">Code Protected</option>
+          </select>
+
+          {errors.visibility && <span className="error" style={{ color: "red" }}>{errors.visibility.message}</span>}
+
+          {/* Code */}
+          <label>MeetingCode</label>
+          <input
+            type="text"
+            placeholder="Enter code"
+            {...register("code")}
+          />
+          {errors.code && <span className="error" style={{ color: "red" }}>{errors.code.message}</span>}
           {/* Participants */}
           <label>Add Participants</label>
 

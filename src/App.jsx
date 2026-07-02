@@ -13,7 +13,7 @@ import JoinMeeting from "./pages/JoinMeeting";
 import NewMeeting from "./pages/NewMeeting";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
-import Test from "./components/Test";
+import MeetingScreen from "./components/MeetingScreen";
 
 function App() {
 
@@ -21,16 +21,20 @@ function App() {
   return (
     <Routes>
       {/* Public Routes */}
-      <Route path="/test" element={<Test />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="*" element={<NotFound />} />
+
+
+      <Route path="meeting/:meetingId" element={<MeetingScreen />} />
 
       <Route path="/" element={<AppShell />}>
         <Route index element={<Dashboard />} />
 
         <Route path="profile" element={<Profile />} />
         <Route path="calendar" element={<Calender />} />
+
+
 
         <Route path="meeting">
           <Route path="schedule" element={<ScheduleMeeting />} />

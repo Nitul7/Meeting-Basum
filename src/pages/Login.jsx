@@ -28,6 +28,10 @@ function Login() {
     try {
       const { email, password } = data;
       const response = await login(email, password);
+
+      console.log("Response: ");
+      console.log(response.data.accessToken);
+      console.log(response.data.refreshToken);
       setAccessToken(response.data.accessToken);
       setRefreshToken(response.data.refreshToken);
       toast.success('Login successful!');

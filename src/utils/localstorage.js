@@ -1,4 +1,6 @@
 const setAccessToken = (token) => {
+    console.log("Setting access token: ");
+    console.log(token);
     localStorage.setItem('accessToken', token);
 }
 

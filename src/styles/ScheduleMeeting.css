@@ -1,5 +1,5 @@
 body {
-  background:#f9fafb;
+  background: #f9fafb;
   min-height: 100vh;
 }
 
@@ -7,13 +7,14 @@ body {
   padding: 28px;
 }
 
-.schedule-container  form {
+.schedule-container form {
   max-width: 1400px;
   margin: 0 auto;
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(300px, 0.95fr);
   gap: 24px;
   align-items: start;
+  overflow-y: scroll;
 }
 
 /* LEFT FORM */
@@ -177,7 +178,7 @@ body {
     padding: 18px;
   }
 
-  .schedule-container > form {
+  .schedule-container>form {
     grid-template-columns: 1fr;
   }
 
@@ -187,6 +188,7 @@ body {
 }
 
 @media (max-width: 640px) {
+
   .form-section,
   .summary-section {
     padding: 18px;

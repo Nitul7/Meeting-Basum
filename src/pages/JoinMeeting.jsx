@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "../styles/JoinMeeting.css";
+import { verifyMeetingCode } from "../services/MeetingService";
 
 const JoinMeeting = () => {
   const videoRef = useRef(null);
@@ -36,54 +37,59 @@ const JoinMeeting = () => {
     };
   }, []);
 
+  const joinMeeting = async () => {
+    const verifyMeeting = await verifyMeetingCode(meetingCode);
+    navigate(`/meeting/${meeting._id}`);
+  };
+
   return (
     <div className="join-meeting">
-    <div className="join-container">
-      {/* LEFT SIDE */}
-      <div className="join-left">
-        <h2>Join Meeting</h2>
-        <p>Enter the meeting code to join a meeting</p>
+      <div className="join-container">
+        {/* LEFT SIDE */}
+        <div className="join-left">
+          <h2>Join Meeting</h2>
+          <p>Enter the meeting code to join a meeting</p>
 
-        <input
-          type="text"
-          placeholder="Enter meeting code or link"
-          value={meetingCode}
-          onChange={(e) => setMeetingCode(e.target.value)}
-        />
-
-        <button className="join-btn">Join Meeting</button>
-
-        <div className="divider">or</div>
-
-        <button className="link-btn">Join with Personal Link</button>
-      </div>
-
-      {/* RIGHT SIDE */}
-      <div className="join-right">
-        <h3 className="join-right-h3">Preview</h3>
-
-        <div className="video-box">
-          <video
-            ref={videoRef}
-            autoPlay
-            playsInline
-            muted
-            className="video-preview"
+          <input
+            type="text"
+            placeholder="Enter meeting code or link"
+            value={meetingCode}
+            onChange={(e) => setMeetingCode(e.target.value)}
           />
+
+          <button className="join-btn" onClick={joinMeeting}>Join Meeting</button>
+
+          <div className="divider">or</div>
+
+          <button className="link-btn">Join with Personal Link</button>
         </div>
 
-        <select>
-          <option>Integrated Camera</option>
-        </select>
+        {/* RIGHT SIDE */}
+        <div className="join-right">
+          <h3 className="join-right-h3">Preview</h3>
 
-        <select>
-          <option>Default - Microphone</option>
-        </select>
+          <div className="video-box">
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted
+              className="video-preview"
+            />
+          </div>
 
-        <p className="ready">You are ready to join!</p>
+          <select>
+            <option>Integrated Camera</option>
+          </select>
+
+          <select>
+            <option>Default - Microphone</option>
+          </select>
+
+          <p className="ready">You are ready to join!</p>
+        </div>
       </div>
     </div>
-  </div>
   );
 };
 

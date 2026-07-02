@@ -1,24 +1,23 @@
 import { useState } from "react";
 import { getLivekitToken } from "../services/LivekitService";
-import { Room } from "livekit-client";
 import { VideoConference, LiveKitRoom } from "@livekit/components-react";
+import "@livekit/components-styles";
+import { useParams } from "react-router";
 
 
-export default function Test() {
+export default function MeetingScreen() {
+
+    const { meetingId } = useParams();
+
     const [token, setToken] = useState(null);
-
-
     const connectToRoom = async () => {
-
         const token = await getLivekitToken({
-            roomName: "Pravesh",
-            userName: new Date().getTime().toString(),
+            meetingId: meetingId,
         });
         setToken(token);
     }
 
     return <div>
-
         {token && (
             <LiveKitRoom
                 serverUrl={import.meta.env.VITE_LIVEKIT_URL}
@@ -26,6 +25,7 @@ export default function Test() {
                 video={true}
                 audio={true}
                 connect={true}
+                style={{ height: "100vh" }}
             >
                 <VideoConference />
             </LiveKitRoom>

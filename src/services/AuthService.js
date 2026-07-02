@@ -12,6 +12,8 @@ export const register = async (name, email, password) => {
 
 export const login = async (email, password) => {
     const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, { email, password });
+    console.log("Response: ");
+    console.log(response.data);
     return response.data;
 };
 

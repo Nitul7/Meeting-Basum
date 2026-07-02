@@ -9,6 +9,8 @@ export const ScheduleMeetingFormSchema = z.object({
     timezone: z.string().min(1, { message: "Timezone is required" }),
     participants: z.string().optional(),
     description: z.string().optional(),
+    visibiliy: z.enum(["public", "private", "codeprotected"]).default("public"),
+    code: z.string().optional(),
 });
 
 export const ScheduleMeetingFormSchemaResolver = zodResolver(ScheduleMeetingFormSchema);

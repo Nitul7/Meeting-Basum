@@ -1,9 +1,21 @@
 import React from "react";
 import { useNavigate } from "react-router";
 import "../styles/Dashboard.css";
+import { getMeetings } from "../services/MeetingService";
+import { useState, useEffect } from "react";
 
 const Dashboard = () => {
   const navigate = useNavigate();
+
+  const [meetings, setMeetings] = useState([]);
+
+  useEffect(() => {
+    const fetchMeetings = async () => {
+      const meetings = await getMeetings();
+      setMeetings(meetings.data);
+    };
+    fetchMeetings();
+  }, []);
 
   return (
     <div className="main">
@@ -12,6 +24,7 @@ const Dashboard = () => {
         <h2>Good Morning, Risan Basukala 👋</h2>
         <p>Here's what's happening with your meetings today.</p>
       </div>
+
 
       {/* ACTION CARDS */}
       <div className="cards">
@@ -49,42 +62,33 @@ const Dashboard = () => {
       </div>
 
       {/* UPCOMING MEETINGS */}
+
+
       <div className="meetings">
         <div className="meeting-header">
           <h3>Upcoming Meetings</h3>
           <span>View All</span>
         </div>
+        {meetings && meetings.map((meeting) => (
+          <div className="meeting-card">
+            <div className="left">
+              <div className="mini-icon purple">👥</div>
+              <div>
+                <h4>{meeting.title}</h4>
+                <p>Host: Risan Basukala</p>
+              </div>
+            </div>
 
-        <div className="meeting-card">
-          <div className="left">
-            <div className="mini-icon purple">👥</div>
-            <div>
-              <h4>Project Planning Meeting</h4>
-              <p>Host: Risan Basukala</p>
+            <div className="right">
+              <p>Today, 10:00 AM - 11:00 AM</p>
+              <button onClick={() => navigate(`/meeting/${meeting._id}`)}>Join</button>
             </div>
           </div>
+        ))}
 
-          <div className="right">
-            <p>Today, 10:00 AM - 11:00 AM</p>
-            <button>Join</button>
-          </div>
-        </div>
 
-        <div className="meeting-card">
-          <div className="left">
-            <div className="mini-icon green">👥</div>
-            <div>
-              <h4>Marketing Strategy</h4>
-              <p>Host: Alice</p>
-            </div>
-          </div>
 
-          <div className="right">
-            <p>Today, 02:00 PM - 03:00 PM</p>
-            <button>Join</button>
-          </div>
-        </div>
-        <div className="meeting-card">
+        {/* <div className="meeting-card">
           <div className="left">
             <div className="mini-icon green">👥</div>
             <div>
@@ -97,8 +101,22 @@ const Dashboard = () => {
             <p>Today, 02:00 PM - 03:00 PM</p>
             <button>Join</button>
           </div>
-        </div>
-        <div className="meeting-card">
+        </div> */}
+        {/* <div className="meeting-card">
+          <div className="left">
+            <div className="mini-icon green">👥</div>
+            <div>
+              <h4>Marketing Strategy</h4>
+              <p>Host: Alice</p>
+            </div>
+          </div>
+
+          <div className="right">
+            <p>Today, 02:00 PM - 03:00 PM</p>
+            <button>Join</button>
+          </div>
+        </div> */}
+        {/* <div className="meeting-card">
           <div className="left">
             <div className="mini-icon green">👥</div>
             <div>
@@ -140,7 +158,7 @@ const Dashboard = () => {
             <p>Tomorrow, 11:00 AM - 12:00 PM</p>
             <button>Join</button>
           </div>
-        </div>
+        </div> */}
       </div>
 
     </div>
