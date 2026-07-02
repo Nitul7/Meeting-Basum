@@ -29,7 +29,7 @@ export const createInstantMeeting = async () => {
     const endTime = new Date(startTime.getTime() + 60 * 60 * 1000);
     const response = await api.post(URL, {
       title: "Instant Meeting",
-      visibility: "private",
+      visibility: "public",
       startTime,
       endTime,
       duration: "1hr",

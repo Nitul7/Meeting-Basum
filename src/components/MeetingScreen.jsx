@@ -13,41 +13,95 @@ export default function MeetingScreen() {
 
     const [token, setToken] = useState(null);
     const [meetingTitle, setMeetingTitle] = useState("");
-    const [error, setError] = useState(null);
+    const [status, setStatus] = useState("connecting");
+    const [codeInput, setCodeInput] = useState("");
+    const [codeError, setCodeError] = useState("");
+
+    const requestToken = async (code) => {
+        try {
+            const fetchedToken = await getLivekitToken(meetingId, code);
+            setToken(fetchedToken);
+            setStatus("ready");
+        } catch (err) {
+            const reason = err.response?.data?.error;
+            if (reason === "NOT_INVITED") {
+                setStatus("not-invited");
+            } else if (reason === "ROOM_FULL") {
+                setStatus("room-full");
+            } else if (reason === "CODE_REQUIRED") {
+                setStatus("need-code");
+            } else if (reason === "INVALID_CODE") {
+                setCodeError("Incorrect code, try again.");
+                setStatus("need-code");
+            } else {
+                setStatus("failed");
+                toast.error("Could not join meeting");
+            }
+        }
+    };
 
     useEffect(() => {
         let cancelled = false;
 
-        const connect = async () => {
+        const init = async () => {
             try {
-                const [fetchedToken, meeting] = await Promise.all([
-                    getLivekitToken(meetingId),
-                    getMeetingById(meetingId),
-                ]);
+                const meeting = await getMeetingById(meetingId);
                 if (!cancelled) {
-                    setToken(fetchedToken);
                     setMeetingTitle(meeting.title);
                 }
             } catch (err) {
-                if (!cancelled) {
-                    setError(err);
-                    toast.error("Could not join meeting");
-                }
+                // title fetch failing isn't fatal to the join attempt itself
+            }
+            if (!cancelled) {
+                await requestToken();
             }
         };
 
-        connect();
+        init();
 
         return () => {
             cancelled = true;
         };
     }, [meetingId]);
 
-    if (error) {
+    const submitCode = async (e) => {
+        e.preventDefault();
+        setCodeError("");
+        await requestToken(codeInput);
+    };
+
+    if (status === "not-invited") {
+        return <div className="meeting-screen-message">You were not invited to this meeting.</div>;
+    }
+
+    if (status === "room-full") {
+        return <div className="meeting-screen-message">This meeting is full.</div>;
+    }
+
+    if (status === "failed") {
         return <div className="meeting-screen-message">Failed to join meeting.</div>;
     }
 
-    if (!token) {
+    if (status === "need-code") {
+        return (
+            <div className="meeting-screen-message">
+                <form className="meeting-code-form" onSubmit={submitCode}>
+                    <p>This meeting requires a code to join.</p>
+                    <input
+                        type="text"
+                        placeholder="Enter meeting code"
+                        value={codeInput}
+                        onChange={(e) => setCodeInput(e.target.value)}
+                        autoFocus
+                    />
+                    {codeError && <p className="meeting-code-error">{codeError}</p>}
+                    <button type="submit">Join</button>
+                </form>
+            </div>
+        );
+    }
+
+    if (status !== "ready" || !token) {
         return <div className="meeting-screen-message">Connecting to meeting...</div>;
     }
 
@@ -63,6 +117,7 @@ export default function MeetingScreen() {
                     video={true}
                     audio={true}
                     connect={true}
+                    data-lk-theme="default"
                     style={{ height: "100%" }}
                     onDisconnected={() => navigate("/")}
                 >
