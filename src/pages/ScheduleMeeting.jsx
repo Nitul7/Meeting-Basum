@@ -16,11 +16,11 @@ const ScheduleMeeting = () => {
       title: "",
       date: today,
       time: "10:00",
-      duration: "1",
+      duration: "1hr",
       timezone: "(GMT+05:15) Nepal Standard Time",
       participants: "",
       description: "",
-      visibiliy: "public",
+      visibility: "public",
       code: Math.random().toString(36).substring(2, 15),
     },
   });
@@ -28,10 +28,10 @@ const ScheduleMeeting = () => {
   const form = watch();
 
   const durationLabel =
-    form.duration === "0.5" ? "30 Min" : form.duration === "2" ? "2 Hours" : "1 Hour";
+    form.duration === "30min" ? "30 Min" : form.duration === "2hr" ? "2 Hours" : "1 Hour";
 
   const durationHours =
-    form.duration === "0.5" ? 0.5 : form.duration === "2" ? 2 : 1;
+    form.duration === "30min" ? 0.5 : form.duration === "2hr" ? 2 : 1;
 
   const formatDate = (dateValue) => {
     if (!dateValue) return today;
