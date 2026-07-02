@@ -12,7 +12,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchMeetings = async () => {
       const meetings = await getMeetings();
-      setMeetings(meetings.data);
+      setMeetings(meetings);
     };
     fetchMeetings();
   }, []);

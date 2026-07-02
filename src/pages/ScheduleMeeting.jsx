@@ -6,7 +6,7 @@ import { scheduleMeeting } from "../services/MeetingService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router";
 
-const ScheduleMeeting = ({ addEvent }) => {
+const ScheduleMeeting = () => {
   const today = new Date().toISOString().split("T")[0];
   const navigate = useNavigate();
 
@@ -73,27 +73,26 @@ const ScheduleMeeting = ({ addEvent }) => {
 
   const onSubmit = async (data) => {
     try {
-      console.log("Data: ");
-      console.log(data);
-      const response = await scheduleMeeting(data);
-      console.log("Response: ");
-      console.log(response);
+      const startTime = new Date(`${data.date}T${data.time}`);
+      const endTime = new Date(startTime.getTime() + durationHours * 60 * 60 * 1000);
+
+      const response = await scheduleMeeting({
+        title: data.title,
+        description: data.description,
+        visibility: data.visibility,
+        duration: data.duration,
+        code: data.code,
+        participants: data.participants,
+        startTime,
+        endTime,
+      });
+
       const successStatus = response?.status >= 200 && response?.status < 300;
 
       if (successStatus) {
-        const start = new Date(`${data.date}T${data.time}`);
-
-        const end = new Date(
-          start.getTime() +
-          Number(data.duration) * 60 * 60 * 1000
-        );
-
-        if (addEvent) {
-          addEvent({
-            title: data.title,
-            start,
-            end,
-          });
+        const unmatchedEmails = response?.data?.unmatchedEmails || [];
+        if (unmatchedEmails.length > 0) {
+          toast.warn(`No account found for: ${unmatchedEmails.join(", ")}`);
         }
 
         toast.success("Meeting scheduled successfully!");

@@ -34,7 +34,7 @@ export const createInstantMeeting = async () => {
       endTime,
       duration: "1hr",
     });
-    return response.data;
+    return response.data.meeting;
   } catch (error) {
     console.error('Error creating instant meeting:', error);
     throw error;
