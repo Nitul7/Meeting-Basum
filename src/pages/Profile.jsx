@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import "../styles/ProfileSettings.css";
-import { getMyProfile, updateMyProfile } from "../services/ProfileService";
+import { getMyProfile, updateMyProfile, uploadAvatar } from "../services/ProfileService";
 import { toast } from "react-toastify";
 
 const ProfileSettings = () => {
@@ -27,6 +27,9 @@ const ProfileSettings = () => {
           phone: data.phone || "",
           bio: data.bio || "",
         });
+        if (data.avatar) {
+          setProfileImage(data.avatar);
+        }
       } catch (error) {
         toast.error("Could not load profile");
       }
@@ -48,12 +51,18 @@ const ProfileSettings = () => {
   };
 
   // HANDLE IMAGE CHANGE
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
+    if (!file) return;
 
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfileImage(imageUrl);
+    const previewUrl = URL.createObjectURL(file);
+    setProfileImage(previewUrl);
+
+    try {
+      const updated = await uploadAvatar(file);
+      setProfileImage(updated.avatar);
+    } catch (error) {
+      toast.error("Could not upload photo");
     }
   };
 
