@@ -1,3 +1,4 @@
+import axios from "axios";
 import api from "./Api";
 
 const URL = "/meetings/";
@@ -57,6 +58,16 @@ export const getMeetingById = async (id) => {
     return response.data;
   } catch (error) {
     console.error('Error getting meeting:', error);
+    throw error;
+  }
+};
+
+export const getPublicMeetingInfo = async (id) => {
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_API_URL}${URL}${id}/public`);
+    return response.data;
+  } catch (error) {
+    console.error('Error getting public meeting info:', error);
     throw error;
   }
 };
