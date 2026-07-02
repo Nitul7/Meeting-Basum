@@ -1,10 +1,6 @@
 import api from './Api';
 
-
-export const getLivekitToken = async (body) => {
-    const response = await api.post('/livekit/token', body);
-
-    console.log("Response: ");
-    console.log(response);
+export const getLivekitToken = async (meetingId) => {
+    const response = await api.post('/livekit/token', { meetingId });
     return response.data.token;
-}
+};

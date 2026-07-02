@@ -6,7 +6,7 @@ const JoinMeeting = () => {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
 
-  const [meetingCode, setMeetingCode] = useState("");
+  
 
   // Start camera + mic
   useEffect(() => {
@@ -38,6 +38,7 @@ const JoinMeeting = () => {
   }, []);
 
   const joinMeeting = async () => {
+
     const verifyMeeting = await verifyMeetingCode(meetingCode);
     navigate(`/meeting/${meeting._id}`);
   };
