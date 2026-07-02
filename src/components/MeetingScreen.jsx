@@ -71,15 +71,15 @@ export default function MeetingScreen() {
     };
 
     if (status === "not-invited") {
-        return <div className="meeting-screen-message">You were not invited to this meeting.</div>;
+        return <div className="meeting-screen-message"><div className="meeting-screen-card">You were not invited to this meeting.</div></div>;
     }
 
     if (status === "room-full") {
-        return <div className="meeting-screen-message">This meeting is full.</div>;
+        return <div className="meeting-screen-message"><div className="meeting-screen-card">This meeting is full.</div></div>;
     }
 
     if (status === "failed") {
-        return <div className="meeting-screen-message">Failed to join meeting.</div>;
+        return <div className="meeting-screen-message"><div className="meeting-screen-card">Failed to join meeting.</div></div>;
     }
 
     if (status === "need-code") {
@@ -102,13 +102,17 @@ export default function MeetingScreen() {
     }
 
     if (status !== "ready" || !token) {
-        return <div className="meeting-screen-message">Connecting to meeting...</div>;
+        return <div className="meeting-screen-message"><div className="meeting-screen-card">Connecting to meeting...</div></div>;
     }
 
     return (
         <div className="meeting-screen">
             <header className="meeting-screen-header">
                 <span className="meeting-screen-title">{meetingTitle}</span>
+                <span className="meeting-live-indicator">
+                    <span className="meeting-live-dot"></span>
+                    Live
+                </span>
             </header>
             <div className="meeting-screen-room">
                 <LiveKitRoom

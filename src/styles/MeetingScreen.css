@@ -26,6 +26,8 @@
     flex: 1;
     min-height: 0;
     padding: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    border-radius: 16px;
 }
 
 .meeting-screen-room .lk-video-conference,
@@ -88,4 +90,30 @@
     color: #dc2626;
     font-size: 12px;
     margin: 0;
+}
+
+.meeting-screen-card {
+    background: #ffffff;
+    padding: 32px 48px;
+    border-radius: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    color: #111827;
+    font-size: 14px;
+}
+
+.meeting-live-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #16a34a;
+}
+
+.meeting-live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #16a34a;
 }
