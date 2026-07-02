@@ -7,7 +7,7 @@ export const register = async (name, email, password) => {
             'Content-Type': 'application/json'
         }
     });
-    return response.data;
+    return response;
 };
 
 export const login = async (email, password) => {
