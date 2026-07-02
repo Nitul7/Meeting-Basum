@@ -1,0 +1,56 @@
+.meeting-screen {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: #f9fafb;
+}
+
+.meeting-screen-header {
+    height: 64px;
+    width: 100%;
+    background: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    padding: 0 24px;
+    flex-shrink: 0;
+}
+
+.meeting-screen-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.meeting-screen-room {
+    flex: 1;
+    min-height: 0;
+    padding: 16px;
+}
+
+.meeting-screen-room .lk-video-conference,
+.meeting-screen-room .lk-room-container {
+    height: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.meeting-screen-room .lk-control-bar {
+    --lk-accent-bg: #4f46e5;
+    --lk-accent-fg: #ffffff;
+    border-radius: 16px;
+    margin: 0 auto 16px;
+    max-width: fit-content;
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.meeting-screen-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #f9fafb;
+    color: #6b7280;
+    font-size: 14px;
+}
