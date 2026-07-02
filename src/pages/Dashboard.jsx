@@ -67,7 +67,7 @@ const Dashboard = () => {
       <div className="meetings">
         <div className="meeting-header">
           <h3>Upcoming Meetings</h3>
-          <span>View All</span>
+          <span onClick={() => navigate("/meeting/all")} style={{ cursor: "pointer" }}>View All</span>
         </div>
         {meetings && meetings.map((meeting) => (
           <div className="meeting-card">

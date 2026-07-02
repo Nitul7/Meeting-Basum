@@ -14,6 +14,7 @@ import NewMeeting from "./pages/NewMeeting";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import MeetingScreen from "./components/MeetingScreen";
+import AllMeetings from "./pages/AllMeetings";
 
 function App() {
 
@@ -40,6 +41,7 @@ function App() {
           <Route path="schedule" element={<ScheduleMeeting />} />
           <Route path="join" element={<JoinMeeting />} />
           <Route path="new" element={<NewMeeting />} />
+          <Route path="all" element={<AllMeetings />} />
         </Route>
       </Route>
 

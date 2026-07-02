@@ -50,3 +50,13 @@ export const getMeetings = async () => {
     throw error;
   }
 };
+
+export const getMeetingById = async (id) => {
+  try {
+    const response = await api.get(`${URL}${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error getting meeting:', error);
+    throw error;
+  }
+};
