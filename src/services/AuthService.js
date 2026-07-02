@@ -22,3 +22,8 @@ export const logout = async () => {
     removeAccessToken();
     removeRefreshToken();
 };
+
+export const refreshAccessToken = async (refreshToken) => {
+    const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/refresh`, { refreshToken });
+    return response.data.data.accessToken;
+};
