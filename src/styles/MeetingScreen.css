@@ -117,3 +117,22 @@
     border-radius: 50%;
     background: #16a34a;
 }
+
+.meeting-screen-prejoin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: #f9fafb;
+}
+
+.meeting-share-btn {
+    margin-left: auto;
+    padding: 6px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #111827;
+    font-size: 13px;
+    cursor: pointer;
+}

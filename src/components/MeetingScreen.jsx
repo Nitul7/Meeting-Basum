@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import { getLivekitToken } from "../services/LivekitService";
-import { getMeetingById } from "../services/MeetingService";
-import { VideoConference, LiveKitRoom } from "@livekit/components-react";
+import { getLivekitToken, getGuestLivekitToken } from "../services/LivekitService";
+import { getPublicMeetingInfo } from "../services/MeetingService";
+import { copyMeetingLink } from "../utils/shareLink";
+import { getAccessToken, getUser } from "../utils/localstorage";
+import { VideoConference, LiveKitRoom, PreJoin } from "@livekit/components-react";
 import "@livekit/components-styles";
 import "../styles/MeetingScreen.css";
 import { useParams, useNavigate } from "react-router";
@@ -13,11 +15,12 @@ export default function MeetingScreen() {
 
     const [token, setToken] = useState(null);
     const [meetingTitle, setMeetingTitle] = useState("");
-    const [status, setStatus] = useState("connecting");
+    const [status, setStatus] = useState("loading");
     const [codeInput, setCodeInput] = useState("");
     const [codeError, setCodeError] = useState("");
+    const [userChoices, setUserChoices] = useState(null);
 
-    const requestToken = async (code) => {
+    const requestAuthenticatedToken = async (code) => {
         try {
             const fetchedToken = await getLivekitToken(meetingId, code);
             setToken(fetchedToken);
@@ -40,20 +43,41 @@ export default function MeetingScreen() {
         }
     };
 
+    const requestGuestToken = async (name) => {
+        try {
+            const fetchedToken = await getGuestLivekitToken(meetingId, name);
+            setToken(fetchedToken);
+            setStatus("ready");
+        } catch (err) {
+            const reason = err.response?.data?.error;
+            if (reason === "ROOM_FULL") {
+                setStatus("room-full");
+            } else {
+                setStatus("failed");
+                toast.error("Could not join meeting");
+            }
+        }
+    };
+
     useEffect(() => {
         let cancelled = false;
 
         const init = async () => {
             try {
-                const meeting = await getMeetingById(meetingId);
-                if (!cancelled) {
-                    setMeetingTitle(meeting.title);
+                const info = await getPublicMeetingInfo(meetingId);
+                if (cancelled) return;
+                setMeetingTitle(info.title);
+
+                const hasToken = !!getAccessToken();
+                if (!hasToken && info.visibility !== "public") {
+                    setStatus("must-login");
+                    return;
                 }
+                setStatus("prejoin");
             } catch (err) {
-                // title fetch failing isn't fatal to the join attempt itself
-            }
-            if (!cancelled) {
-                await requestToken();
+                if (!cancelled) {
+                    setStatus("failed");
+                }
             }
         };
 
@@ -64,11 +88,38 @@ export default function MeetingScreen() {
         };
     }, [meetingId]);
 
+    const handlePreJoinSubmit = async (values) => {
+        setUserChoices(values);
+        setStatus("connecting");
+
+        const hasToken = !!getAccessToken();
+        if (hasToken) {
+            await requestAuthenticatedToken();
+        } else {
+            await requestGuestToken(values.username);
+        }
+    };
+
     const submitCode = async (e) => {
         e.preventDefault();
         setCodeError("");
-        await requestToken(codeInput);
+        await requestAuthenticatedToken(codeInput);
     };
+
+    if (status === "loading") {
+        return <div className="meeting-screen-message"><div className="meeting-screen-card">Loading meeting...</div></div>;
+    }
+
+    if (status === "must-login") {
+        return (
+            <div className="meeting-screen-message">
+                <div className="meeting-screen-card">
+                    <p>Log in to join this meeting.</p>
+                    <button onClick={() => navigate("/login")}>Log In</button>
+                </div>
+            </div>
+        );
+    }
 
     if (status === "not-invited") {
         return <div className="meeting-screen-message"><div className="meeting-screen-card">You were not invited to this meeting.</div></div>;
@@ -101,6 +152,19 @@ export default function MeetingScreen() {
         );
     }
 
+    if (status === "prejoin") {
+        const account = getUser();
+        return (
+            <div className="meeting-screen-prejoin" data-lk-theme="default">
+                <PreJoin
+                    defaults={{ username: account?.name || "" }}
+                    onSubmit={handlePreJoinSubmit}
+                    onError={() => toast.error("Could not access camera/microphone")}
+                />
+            </div>
+        );
+    }
+
     if (status !== "ready" || !token) {
         return <div className="meeting-screen-message"><div className="meeting-screen-card">Connecting to meeting...</div></div>;
     }
@@ -113,13 +177,14 @@ export default function MeetingScreen() {
                     <span className="meeting-live-dot"></span>
                     Live
                 </span>
+                <button className="meeting-share-btn" onClick={() => copyMeetingLink(meetingId)}>Share</button>
             </header>
             <div className="meeting-screen-room">
                 <LiveKitRoom
                     serverUrl={import.meta.env.VITE_LIVEKIT_URL}
                     token={token}
-                    video={true}
-                    audio={true}
+                    video={userChoices?.videoEnabled ?? true}
+                    audio={userChoices?.audioEnabled ?? true}
                     connect={true}
                     data-lk-theme="default"
                     style={{ height: "100%" }}
