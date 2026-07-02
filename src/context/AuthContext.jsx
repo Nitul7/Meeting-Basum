@@ -1,6 +1,6 @@
 // src/context/AuthContext.tsx
 import { createContext, useContext, useState } from "react";
-import { getAccessToken, getRefreshToken } from "../utils/localstorage";
+import { getAccessToken, getRefreshToken, getUser } from "../utils/localstorage";
 
 
 export const AuthContext = createContext(null);
@@ -8,10 +8,11 @@ export const AuthContext = createContext(null);
 export function AuthProvider({ children }) {
     const [accessToken, setAccessToken] = useState(getAccessToken());
     const [refreshToken, setRefreshToken] = useState(getRefreshToken());
+    const [user, setUser] = useState(getUser());
 
     return (
         <AuthContext.Provider
-            value={{ accessToken, refreshToken, setAccessToken, setRefreshToken }
+            value={{ accessToken, refreshToken, user, setAccessToken, setRefreshToken, setUser }
             }
         >
             {children}

@@ -24,4 +24,17 @@ const removeRefreshToken = () => {
     localStorage.removeItem('refreshToken');
 }
 
-export { setAccessToken, getAccessToken, removeAccessToken, setRefreshToken, getRefreshToken, removeRefreshToken };
+const setUser = (user) => {
+    localStorage.setItem('user', JSON.stringify(user));
+}
+
+const getUser = () => {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+}
+
+const removeUser = () => {
+    localStorage.removeItem('user');
+}
+
+export { setAccessToken, getAccessToken, removeAccessToken, setRefreshToken, getRefreshToken, removeRefreshToken, setUser, getUser, removeUser };
