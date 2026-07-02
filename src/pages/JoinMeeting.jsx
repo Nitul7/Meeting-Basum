@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router";
 import "../styles/JoinMeeting.css";
 import { verifyMeetingCode } from "../services/MeetingService";
+import { toast } from "react-toastify";
 
 const JoinMeeting = () => {
   const videoRef = useRef(null);
   const streamRef = useRef(null);
+  const navigate = useNavigate();
 
-  
+  const [meetingCode, setMeetingCode] = useState("");
 
   // Start camera + mic
   useEffect(() => {
@@ -38,9 +41,17 @@ const JoinMeeting = () => {
   }, []);
 
   const joinMeeting = async () => {
+    if (!meetingCode.trim()) {
+      toast.error("Enter a meeting code or link");
+      return;
+    }
 
-    const verifyMeeting = await verifyMeetingCode(meetingCode);
-    navigate(`/meeting/${meeting._id}`);
+    try {
+      const meeting = await verifyMeetingCode(meetingCode);
+      navigate(`/meeting/${meeting._id}`);
+    } catch (err) {
+      toast.error("Meeting not found");
+    }
   };
 
   return (

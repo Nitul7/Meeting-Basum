@@ -2,6 +2,7 @@ import "../styles/NewMeeting.css"
 import { useNavigate } from "react-router"
 import React, { useState } from "react"
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined'
+import { createInstantMeeting } from "../services/MeetingService"
 
 function NewMeeting() {
   const navigate = useNavigate();
@@ -22,8 +23,12 @@ function NewMeeting() {
   };
 
   const startNewMeeting = async () => {
-    const meetingId = new Date().getTime().toString();
-    navigate(`/meeting/${meetingId}`);
+    try {
+      const meeting = await createInstantMeeting();
+      navigate(`/meeting/${meeting._id}`);
+    } catch (err) {
+      console.error("Failed to start meeting:", err);
+    }
   };
 
   return (
