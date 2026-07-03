@@ -53,7 +53,11 @@ const Navbar = ({ centerContent, rightContent, showLogo = false, showProfile = t
 
       {/* LEFT */}
       <div className="navbar-left">
-        {showLogo && <Logo />}
+        {showLogo && (
+          <div className="navbar-logo-link" onClick={() => navigate('/')}>
+            <Logo />
+          </div>
+        )}
       </div>
 
       {/* CENTER */}

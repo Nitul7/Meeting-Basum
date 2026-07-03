@@ -22,6 +22,12 @@
   align-items: center;
 }
 
+.navbar-logo-link {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
 /* CENTER */
 .navbar-center {
   display: flex;

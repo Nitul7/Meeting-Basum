@@ -6,7 +6,7 @@ export const getLivekitToken = async (meetingId, code) => {
     return response.data.token;
 };
 
-export const getGuestLivekitToken = async (meetingId, name) => {
-    const response = await publicApi.post('/livekit/guest-token', { meetingId, name });
+export const getGuestLivekitToken = async (meetingId, name, code) => {
+    const response = await publicApi.post('/livekit/guest-token', { meetingId, name, code });
     return response.data.token;
 };

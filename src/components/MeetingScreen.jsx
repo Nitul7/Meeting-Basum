@@ -21,6 +21,7 @@ export default function MeetingScreen() {
     const [codeInput, setCodeInput] = useState("");
     const [codeError, setCodeError] = useState("");
     const [userChoices, setUserChoices] = useState(null);
+    const [guestName, setGuestName] = useState("");
 
     const requestAuthenticatedToken = async (code) => {
         try {
@@ -45,15 +46,22 @@ export default function MeetingScreen() {
         }
     };
 
-    const requestGuestToken = async (name) => {
+    const requestGuestToken = async (name, code) => {
         try {
-            const fetchedToken = await getGuestLivekitToken(meetingId, name);
+            const fetchedToken = await getGuestLivekitToken(meetingId, name, code);
             setToken(fetchedToken);
             setStatus("ready");
         } catch (err) {
             const reason = err.response?.data?.error;
             if (reason === "ROOM_FULL") {
                 setStatus("room-full");
+            } else if (reason === "CODE_REQUIRED") {
+                setStatus("need-code");
+            } else if (reason === "INVALID_CODE") {
+                setCodeError("Incorrect code, try again.");
+                setStatus("need-code");
+            } else if (reason === "LOGIN_REQUIRED") {
+                setStatus("must-login");
             } else {
                 setStatus("failed");
                 toast.error("Could not join meeting");
@@ -70,7 +78,7 @@ export default function MeetingScreen() {
                 if (cancelled) return;
                 setMeetingTitle(info.title);
 
-                if (!accessToken && info.visibility !== "public") {
+                if (!accessToken && info.visibility === "private") {
                     setStatus("must-login");
                     return;
                 }
@@ -96,6 +104,7 @@ export default function MeetingScreen() {
         if (accessToken) {
             await requestAuthenticatedToken();
         } else {
+            setGuestName(values.username);
             await requestGuestToken(values.username);
         }
     };
@@ -103,7 +112,11 @@ export default function MeetingScreen() {
     const submitCode = async (e) => {
         e.preventDefault();
         setCodeError("");
-        await requestAuthenticatedToken(codeInput);
+        if (accessToken) {
+            await requestAuthenticatedToken(codeInput);
+        } else {
+            await requestGuestToken(guestName, codeInput);
+        }
     };
 
     const navCenter = (
@@ -122,7 +135,7 @@ export default function MeetingScreen() {
         <button className="meeting-share-btn" onClick={() => copyMeetingLink(meetingId)}>Share</button>
     ) : null;
 
-    const nav = <Navbar centerContent={navCenter} rightContent={navRight} showProfile={!!user} />;
+    const nav = <Navbar centerContent={navCenter} rightContent={navRight} showProfile={!!user} showLogo={true} />;
 
     if (status === "loading") {
         return (
@@ -140,7 +153,7 @@ export default function MeetingScreen() {
                 <div className="meeting-screen-message">
                     <div className="meeting-screen-card">
                         <p>Log in to join this meeting.</p>
-                        <button onClick={() => navigate("/login")}>Log In</button>
+                        <button className="meeting-primary-btn" onClick={() => navigate("/login")}>Log In</button>
                     </div>
                 </div>
             </div>
