@@ -1,5 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import "../styles/ProfileSettings.css";
+import { getMyProfile, updateMyProfile, uploadAvatar } from "../services/ProfileService";
+import { toast } from "react-toastify";
 
 const ProfileSettings = () => {
   const fileInputRef = useRef(null);
@@ -9,11 +11,31 @@ const ProfileSettings = () => {
   );
 
   const [profile, setProfile] = useState({
-    name: "Nitul Tako",
-    email: "tnitul80@gmail.com",
-    phone: "9808812406",
-    bio: "MERN Stack Developer | Tech Enthusiast | Open Source Contributor",
+    name: "",
+    email: "",
+    phone: "",
+    bio: "",
   });
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await getMyProfile();
+        setProfile({
+          name: data.name || "",
+          email: data.email || "",
+          phone: data.phone || "",
+          bio: data.bio || "",
+        });
+        if (data.avatar) {
+          setProfileImage(data.avatar);
+        }
+      } catch (error) {
+        toast.error("Could not load profile");
+      }
+    };
+    fetchProfile();
+  }, []);
 
   // HANDLE INPUT CHANGE
   const handleChange = (e) => {
@@ -29,18 +51,33 @@ const ProfileSettings = () => {
   };
 
   // HANDLE IMAGE CHANGE
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
+    if (!file) return;
 
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setProfileImage(imageUrl);
+    const previewUrl = URL.createObjectURL(file);
+    setProfileImage(previewUrl);
+
+    try {
+      const updated = await uploadAvatar(file);
+      setProfileImage(updated.avatar);
+    } catch (error) {
+      toast.error("Could not upload photo");
     }
   };
 
   // SAVE
-  const handleSave = () => {
-    alert("Profile Saved Successfully ✅");
+  const handleSave = async () => {
+    try {
+      await updateMyProfile({
+        name: profile.name,
+        phone: profile.phone,
+        bio: profile.bio,
+      });
+      toast.success("Profile saved successfully!");
+    } catch (error) {
+      toast.error("Could not save profile");
+    }
   };
 
   return (
@@ -90,7 +127,7 @@ const ProfileSettings = () => {
               type="email"
               name="email"
               value={profile.email}
-              onChange={handleChange}
+              disabled
             />
           </div>
 

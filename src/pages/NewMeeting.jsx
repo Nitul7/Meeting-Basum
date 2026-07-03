@@ -2,6 +2,7 @@ import "../styles/NewMeeting.css"
 import { useNavigate } from "react-router"
 import React, { useState } from "react"
 import ExpandMoreOutlinedIcon from '@mui/icons-material/ExpandMoreOutlined'
+import { createInstantMeeting } from "../services/MeetingService"
 
 function NewMeeting() {
   const navigate = useNavigate();
@@ -21,6 +22,15 @@ function NewMeeting() {
     setSettings(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
+  const startNewMeeting = async () => {
+    try {
+      const meeting = await createInstantMeeting();
+      navigate(`/meeting/${meeting._id}`);
+    } catch (err) {
+      console.error("Failed to start meeting:", err);
+    }
+  };
+
   return (
     <div className="new-main">
       <div className="start-text">
@@ -32,7 +42,7 @@ function NewMeeting() {
           <img className="start-logo" src="/start-logo.png"></img>
           <h3>Your meeting is ready!</h3>
           <p>Click the button below to start your Meeting</p>
-          <button className="btn-start" onClick={() => navigate("/")}>
+          <button className="btn-start" onClick={startNewMeeting}>
             <p>Start Meeting Now</p>
           </button>
         </div>
@@ -70,56 +80,56 @@ function NewMeeting() {
             <span className="arrow">⚙️</span>
           </div>
 
-        {/* --- POP-UP MODAL --- */}
-        {showSettings && (
-          <div className="modal-overlay" onClick={() => setShowSettings(false)}>
-            <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-              <div className="modal-header">
-                <h4>Meeting Settings</h4>
-                <button className="close-btn" onClick={() => setShowSettings(false)}>&times;</button>
+          {/* --- POP-UP MODAL --- */}
+          {showSettings && (
+            <div className="modal-overlay" onClick={() => setShowSettings(false)}>
+              <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                <div className="modal-header">
+                  <h4>Meeting Settings</h4>
+                  <button className="close-btn" onClick={() => setShowSettings(false)}>&times;</button>
+                </div>
+
+                <div className="modal-body">
+                  <div className="modal-setting-row">
+                    <div className="setting-info">
+                      <strong>Waiting Room</strong>
+                      <small>Guests must be approved before joining</small>
+                    </div>
+                    <label className="switch">
+                      <input type="checkbox" checked={settings.waitingRoom} onChange={() => handleSettingToggle('waitingRoom')} />
+                      <span className="slider round"></span>
+                    </label>
+                  </div>
+
+                  <div className="modal-setting-row">
+                    <div className="setting-info">
+                      <strong>Auto Recording</strong>
+                      <small>Enable recordings automatically</small>
+                    </div>
+                    <label className="switch">
+                      <input type="checkbox" checked={settings.autoRecord} onChange={() => handleSettingToggle('autoRecord')} />
+                      <span className="slider round"></span>
+                    </label>
+                  </div>
+
+                  <div className="modal-setting-row">
+                    <div className="setting-info">
+                      <strong>Mute on Entry</strong>
+                      <small>Participants join with audio off</small>
+                    </div>
+                    <label className="switch">
+                      <input type="checkbox" checked={settings.muteOnEntry} onChange={() => handleSettingToggle('muteOnEntry')} />
+                      <span className="slider round"></span>
+                    </label>
+                  </div>
+                </div>
+
+                <button className="save-btn" onClick={() => setShowSettings(false)}>Done</button>
               </div>
-
-              <div className="modal-body">
-                <div className="modal-setting-row">
-                  <div className="setting-info">
-                    <strong>Waiting Room</strong>
-                    <small>Guests must be approved before joining</small>
-                  </div>
-                  <label className="switch">
-                    <input type="checkbox" checked={settings.waitingRoom} onChange={() => handleSettingToggle('waitingRoom')} />
-                    <span className="slider round"></span>
-                  </label>
-                </div>
-
-                <div className="modal-setting-row">
-                  <div className="setting-info">
-                    <strong>Auto Recording</strong>
-                    <small>Enable recordings automatically</small>
-                  </div>
-                  <label className="switch">
-                    <input type="checkbox" checked={settings.autoRecord} onChange={() => handleSettingToggle('autoRecord')} />
-                    <span className="slider round"></span>
-                  </label>
-                </div>
-
-                <div className="modal-setting-row">
-                  <div className="setting-info">
-                    <strong>Mute on Entry</strong>
-                    <small>Participants join with audio off</small>
-                  </div>
-                  <label className="switch">
-                    <input type="checkbox" checked={settings.muteOnEntry} onChange={() => handleSettingToggle('muteOnEntry')} />
-                    <span className="slider round"></span>
-                  </label>
-                </div>
-              </div>
-
-              <button className="save-btn" onClick={() => setShowSettings(false)}>Done</button>
             </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
-    </div>
     </div >
   );
 }

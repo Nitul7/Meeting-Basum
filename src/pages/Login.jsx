@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router';
 import '../styles/Login.css';
 import Logo from '../components/Logo'
 import { login } from '../services/AuthService';
-import { setAccessToken, setRefreshToken } from '../utils/localstorage';
+import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-toastify';
 import { useForm } from "react-hook-form"
 import { LoginFormSchemaResolver } from '../schemas/LoginForm.schema';
@@ -13,6 +13,7 @@ import { LoginFormSchemaResolver } from '../schemas/LoginForm.schema';
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { setAccessToken, setRefreshToken, setUser } = useAuth();
 
   const {
     register,
@@ -28,8 +29,10 @@ function Login() {
     try {
       const { email, password } = data;
       const response = await login(email, password);
+
       setAccessToken(response.data.accessToken);
       setRefreshToken(response.data.refreshToken);
+      setUser(response.data.user);
       toast.success('Login successful!');
       navigate('/');
     } catch (error) {

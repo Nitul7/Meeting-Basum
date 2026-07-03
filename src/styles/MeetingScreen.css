@@ -1,0 +1,142 @@
+.meeting-screen-page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    background: #f9fafb;
+}
+
+.meeting-nav-title {
+    display: flex;
+    align-items: center;
+}
+
+.meeting-screen-room {
+    flex: 1;
+    min-height: 0;
+    padding: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    border-radius: 16px;
+}
+
+.meeting-screen-room .lk-video-conference,
+.meeting-screen-room .lk-room-container {
+    height: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.meeting-screen-room .lk-control-bar {
+    --lk-accent-bg: #4f46e5;
+    --lk-accent-fg: #ffffff;
+    border-radius: 16px;
+    margin: 0 auto 16px;
+    max-width: fit-content;
+    background: #ffffff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.meeting-screen-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-height: 0;
+    background: #f9fafb;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.meeting-code-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    background: #ffffff;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.meeting-code-form input {
+    padding: 10px 14px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    width: 220px;
+}
+
+.meeting-code-form button {
+    padding: 8px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #4f46e5;
+    color: #ffffff;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.meeting-code-error {
+    color: #dc2626;
+    font-size: 12px;
+    margin: 0;
+}
+
+.meeting-screen-card {
+    background: #ffffff;
+    padding: 32px 48px;
+    border-radius: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    color: #111827;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.meeting-primary-btn {
+    padding: 10px 28px;
+    border: none;
+    border-radius: 8px;
+    background: #4f46e5;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.meeting-live-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #16a34a;
+}
+
+.meeting-live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #16a34a;
+}
+
+.meeting-screen-prejoin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    min-height: 0;
+    background: #f9fafb;
+}
+
+.meeting-share-btn {
+    padding: 6px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #111827;
+    font-size: 13px;
+    cursor: pointer;
+}

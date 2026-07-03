@@ -4,9 +4,11 @@ import { useForm } from "react-hook-form";
 import { ScheduleMeetingFormSchemaResolver } from "../schemas/ScheduleMeetingForm.schema";
 import { scheduleMeeting } from "../services/MeetingService";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router";
 
-const ScheduleMeeting = ({ addEvent }) => {
+const ScheduleMeeting = () => {
   const today = new Date().toISOString().split("T")[0];
+  const navigate = useNavigate();
 
   const { register, handleSubmit, watch, formState: { errors } } = useForm({
     resolver: ScheduleMeetingFormSchemaResolver,
@@ -14,20 +16,22 @@ const ScheduleMeeting = ({ addEvent }) => {
       title: "",
       date: today,
       time: "10:00",
-      duration: "1",
+      duration: "1hr",
       timezone: "(GMT+05:15) Nepal Standard Time",
       participants: "",
       description: "",
+      visibility: "public",
+      code: Math.random().toString(36).substring(2, 15),
     },
   });
 
   const form = watch();
 
   const durationLabel =
-    form.duration === "0.5" ? "30 Min" : form.duration === "2" ? "2 Hours" : "1 Hour";
+    form.duration === "30min" ? "30 Min" : form.duration === "2hr" ? "2 Hours" : "1 Hour";
 
   const durationHours =
-    form.duration === "0.5" ? 0.5 : form.duration === "2" ? 2 : 1;
+    form.duration === "30min" ? 0.5 : form.duration === "2hr" ? 2 : 1;
 
   const formatDate = (dateValue) => {
     if (!dateValue) return today;
@@ -69,31 +73,32 @@ const ScheduleMeeting = ({ addEvent }) => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await scheduleMeeting(data);
-      console.log("Response: ");
-      console.log(response);
+      const startTime = new Date(`${data.date}T${data.time}`);
+      const endTime = new Date(startTime.getTime() + durationHours * 60 * 60 * 1000);
+
+      const response = await scheduleMeeting({
+        title: data.title,
+        description: data.description,
+        visibility: data.visibility,
+        duration: data.duration,
+        code: data.code,
+        participants: data.participants,
+        startTime,
+        endTime,
+      });
+
       const successStatus = response?.status >= 200 && response?.status < 300;
 
       if (successStatus) {
-        const start = new Date(`${data.date}T${data.time}`);
-
-        const end = new Date(
-          start.getTime() +
-          Number(data.duration) * 60 * 60 * 1000
-        );
-
-        if (addEvent) {
-          addEvent({
-            title: data.title,
-            start,
-            end,
-          });
+        const unmatchedEmails = response?.data?.unmatchedEmails || [];
+        if (unmatchedEmails.length > 0) {
+          toast.warn(`No account found for: ${unmatchedEmails.join(", ")}`);
         }
 
         toast.success("Meeting scheduled successfully!");
 
-        // Optional Redirect
-        // navigate("/dashboard");
+        navigate("/");
+
       } else {
         toast.error(
           response?.data?.message ||
@@ -185,6 +190,26 @@ const ScheduleMeeting = ({ addEvent }) => {
             </div>
           </div>
 
+          {/* Visibility */}
+          <label>Visibility</label>
+          <select
+            {...register("visibility")}
+          >
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+            <option value="codeprotected">Code Protected</option>
+          </select>
+
+          {errors.visibility && <span className="error" style={{ color: "red" }}>{errors.visibility.message}</span>}
+
+          {/* Code */}
+          <label>MeetingCode</label>
+          <input
+            type="text"
+            placeholder="Enter code"
+            {...register("code")}
+          />
+          {errors.code && <span className="error" style={{ color: "red" }}>{errors.code.message}</span>}
           {/* Participants */}
           <label>Add Participants</label>
 

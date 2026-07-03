@@ -55,7 +55,7 @@ const Register = () => {
           <div className="input-group">
             <label>FULL NAME</label>
             <input type="text" placeholder="Your Name" {...register("name")} />
-            {errors.fullName && <span className="error" style={{ color: 'red', fontSize: '12px', marginTop: '5px' }}>{errors.fullName.message}</span>}
+            {errors.name && <span className="error" style={{ color: 'red', fontSize: '12px', marginTop: '5px' }}>{errors.name.message}</span>}
           </div>
 
           <div className="input-group">
