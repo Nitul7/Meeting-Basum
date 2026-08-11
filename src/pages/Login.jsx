@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import '../styles/Login.css';
 import Logo from '../components/Logo'
@@ -12,13 +12,13 @@ import { LoginFormSchemaResolver } from '../schemas/LoginForm.schema';
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
   const { setAccessToken, setRefreshToken, setUser } = useAuth();
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
     resolver: LoginFormSchemaResolver,
@@ -26,6 +26,12 @@ function Login() {
 
 
   const onSubmit = async (data) => {
+    if (isSubmitting) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
     try {
       const { email, password } = data;
       const response = await login(email, password);
@@ -38,6 +44,8 @@ function Login() {
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || 'Login failed! Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -77,7 +85,9 @@ function Login() {
             {errors.password && <span className="error">{errors.password.message}</span>}
           </div>
 
-          <button type="submit" className="submit-btn">Login</button>
+          <button type="submit" className="submit-btn" disabled={isSubmitting}>
+            {isSubmitting ? 'Logging in...' : 'Login'}
+          </button>
 
         </form>
 

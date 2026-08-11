@@ -142,6 +142,16 @@
   transform: scale(0.98);
 }
 
+.submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.submit-btn:disabled:hover {
+  opacity: 0.65;
+}
+
 .form-divider {
   position: relative;
   text-align: center;

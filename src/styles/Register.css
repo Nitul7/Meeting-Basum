@@ -123,6 +123,15 @@
   opacity: 0.9;
 }
 
+.create-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.create-btn:disabled:hover {
+  opacity: 0.65;
+}
+
 .footer-links {
   text-align: center;
   font-size: 13px;

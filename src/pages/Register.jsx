@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import '../styles/Register.css';
 import Logo from '../components/Logo'
@@ -9,12 +9,12 @@ import { RegisterFormSchemaResolver } from '../schemas/RegisterForm.schema';
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
     resolver: RegisterFormSchemaResolver,
@@ -23,6 +23,12 @@ const Register = () => {
 
 
   const onSubmit = async (data) => {
+    if (isSubmitting) {
+      return;
+    }
+
+    setIsSubmitting(true);
+
     try {
       const response = await registerUser(data.name, data.email, data.password);
 
@@ -30,13 +36,16 @@ const Register = () => {
         toast.success('Account created successfully! Redirecting to login...');
         setTimeout(() => {
           navigate('/login');
+          setIsSubmitting(false);
         }, 2000);
       } else {
         toast.error(response.data.message || 'Registration failed! Please try again.');
+        setIsSubmitting(false);
       }
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || 'Registration failed! Please try again.');
+      setIsSubmitting(false);
     }
   };
   return (
@@ -68,7 +77,6 @@ const Register = () => {
             <label>PASSWORD</label>
             <div className="password-wrapper">
               <input type={showPassword ? "text" : "password"} placeholder="At least 6 characters" {...register("password")} />
-              {errors.password && <span className="error" style={{ color: 'red', fontSize: '12px', marginTop: '5px' }}>{errors.password.message}</span>}
               <button type="button" className="password-toggle-btn" onClick={() => setShowPassword(!showPassword)}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6b7280" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
@@ -76,6 +84,7 @@ const Register = () => {
                 </svg>
               </button>
             </div>
+            {errors.password && <span className="error" style={{ color: 'red', fontSize: '12px', marginTop: '5px' }}>{errors.password.message}</span>}
           </div>
 
           <div className="input-group password-field">
@@ -92,7 +101,9 @@ const Register = () => {
             {errors.confirmPassword && <span className="error" style={{ color: 'red', fontSize: '12px', marginTop: '5px' }}>{errors.confirmPassword.message}</span>}
           </div>
 
-          <button type="submit" className="create-btn">Create Account</button>
+          <button type="submit" className="create-btn" disabled={isSubmitting}>
+            {isSubmitting ? 'Creating Account...' : 'Create Account'}
+          </button>
         </form>
 
         <div className="footer-links">
